@@ -61,23 +61,25 @@ public class InformationSystem {
 			System.out.println(iter.toString());
 		for (Customer iter : customers)
 			System.out.println(iter.toString());
+
 		// Information System Starts Here
 
 		System.out.println("\n\nWelcome to Information System");
 		String[] input = { "help", "" };
 		objectType object = objectType.MENU;
-		while (!input[0].equals("exit")) {
+		while (!input[0].equals("exit")) { // Takes input until exit command is received
 
-			if (input[0].equals("switch"))
+			if (input[0].equals("switch")) // If switch command is received in any menu it will switch to the given menu
+											// with switchMenu()
 				object = switchMenu(object, input[1]);
-			else if (object.name().equals("CUSTOMER"))
+			else if (object.name().equals("CUSTOMER")) // Customer Menu
 				try {
 					customerMenu(input, scan);
 				} catch (Exception e) {
 					System.out.println("Error :\t" + e.getLocalizedMessage());
 				}
 
-			else if (object.name().equals("SERVICE"))
+			else if (object.name().equals("SERVICE")) // Service Menu
 				try {
 					serviceProviderMenu(input, scan);
 				} catch (Exception e) {
@@ -86,13 +88,13 @@ public class InformationSystem {
 
 			else {
 				switch (input[0]) {
-				case "help": {
+				case "help": { // Main Menu Help commands
 					System.out.println("Avaliable commands for Main Menu : "
 							+ "\n\tswitch\tmenuName :\tSwitches to selected menu"
 							+ "\n\thelp :\tDisplays avaliable commands" + "\n\texit :\tExits from the application");
 					break;
 				}
-				default: {
+				default: { // Invalid Command Message
 					System.out.println("Error :\tInvalid Command \n>Try using help command to see avaliable command.");
 					break;
 				}
@@ -100,13 +102,14 @@ public class InformationSystem {
 
 			}
 			System.out.print(object + " > ");
-			input = scan.nextLine().split(" ");
+			input = scan.nextLine().split(" "); // Splitting the next input
 		}
 		scan.close();
 		System.out.println("...");
 	}
 
-	public static objectType switchMenu(objectType object, String input) {
+	public static objectType switchMenu(objectType object, String input) { // Switches to the given menu if it has valid
+																			// name
 		try {
 			return objectType.valueOf(input.toUpperCase());
 		} catch (Exception e) {
@@ -115,21 +118,19 @@ public class InformationSystem {
 		}
 	}
 
-	public static void help(objectType object) {
-		System.out.println(object.ordinal() + object.name());
-	}
-
 	@SuppressWarnings("deprecation")
 	public static void customerMenu(String[] input, Scanner scan) throws Exception {
 		switch (input[0]) {
-		case "create": {
+		case "create": { // Create command
 			if (input[1] != null) {
-				for (Customer iter : customers) {
+				for (Customer iter : customers) { // Searches whether given number is in the arraylist
 					if (iter.getCitizenshipNr().equals(input[1])) {
-						throw new Exception("Customer Exists");
+						throw new Exception("Customer Exists"); // Throws an exception if found
 					}
 				}
-				PossibleCustomer customer = new PossibleCustomer(input[1]);
+				PossibleCustomer customer = new PossibleCustomer(input[1]); // Customers are created as possible by
+																			// default, and stay that way until a
+																			// subscription is assigned
 				System.out.println(">Enter Customer Profile Informations of " + input[1] + " :");
 				System.out.print(">\tName : ");
 				customer.setName(scan.nextLine());
@@ -144,11 +145,11 @@ public class InformationSystem {
 			}
 			break;
 		}
-		case "delete": {
+		case "delete": { // Delete Command
 			boolean isFound = false;
 			if (input[1] != null) {
 				for (Customer iter : customers) {
-					if (iter.getCitizenshipNr().equals(input[1])) {
+					if (iter.getCitizenshipNr().equals(input[1])) { // Deletes customer if given number is found
 						isFound = true;
 						System.out.println(
 								">Customer " + iter.getName() + "(" + iter.getCitizenshipNr() + ") has been removed");
@@ -165,7 +166,7 @@ public class InformationSystem {
 			else
 				throw new Exception("Customer does not exist");
 		}
-		case "edit": {
+		case "edit": { // Edits all parameters of the customer
 			boolean isFound = false;
 			if (input[1] != null) {
 				for (Customer iter : customers) {
@@ -190,18 +191,18 @@ public class InformationSystem {
 			else
 				throw new Exception("Customer does not exist");
 		}
-		case "start": {
+		case "start": { // Start a subscription
 			if (input[1] != null) {
 				for (Customer iter : customers) {
 					if (iter.getCitizenshipNr().equals(input[1])) {
 						if (iter.getClass().equals(PossibleCustomer.class)) {
-							System.out.println("This guy is possible customer");
 							ExistingCustomer object = new ExistingCustomer(input[1]);
 							object.setMail(iter.getMail());
 							object.setName(iter.getName());
 							object.setTel(iter.getTel());
 							customers.remove(iter);
-							customers.add(object);
+							customers.add(object); // Transforms a possible customer to existing customer and adds the
+													// subscription
 							System.out.println(iter.toString());
 
 							System.out.println(">Enter the Subscription Details for " + input[1] + " :");
@@ -220,7 +221,8 @@ public class InformationSystem {
 										subscriptionDate.setDate(Integer.parseInt(startDate[1]));
 										subscriptionDate.setYear(Integer.parseInt(startDate[2]));
 										object.setSubscription(new Subscription(subscriptionDate, plan));
-
+										System.out.println(object.getSubscription().toString() + " was added to "+object.getName());
+										break;
 									} else {
 										throw new Exception("Subscription Plan does not exist");
 									}
@@ -243,7 +245,7 @@ public class InformationSystem {
 			}
 			break;
 		}
-		case "end": {
+		case "end": { // Ends the subscription
 			boolean isFound = false;
 			if (input[1] != null) {
 				for (Customer iter : customers) {
@@ -255,7 +257,9 @@ public class InformationSystem {
 							object.setName(iter.getName());
 							object.setTel(iter.getTel());
 							customers.remove(iter);
-							customers.add(object);
+							customers.add(object); // Ends the subscription by turning customer back to possible
+													// customer
+							System.out.println("Subscription of "+object.getName()+ " has ended");
 							break;
 						} else {
 							throw new Exception("Customer has no Subscription");
@@ -270,7 +274,7 @@ public class InformationSystem {
 			else
 				throw new Exception("Customer does not exist");
 		}
-		case "display": {
+		case "display": { // Displays given customer's details
 			boolean isFound = false;
 			if (input[1] != null) {
 				for (Customer iter : customers) {
@@ -288,7 +292,7 @@ public class InformationSystem {
 			else
 				throw new Exception("Customer does not exist");
 		}
-		case "list": {
+		case "list": { // Lists all customers along with their citizenship number
 			System.out.println("\tFull Name\tCitizenship Number");
 			for (Customer iter : customers) {
 
@@ -319,10 +323,11 @@ public class InformationSystem {
 
 	public static void serviceProviderMenu(String[] input, Scanner scan) throws Exception {
 		switch (input[0]) {
-		case "create": {
+		case "create": { // Creates a service provider
 			if (input[1] != null) {
 				for (ServiceProvider iter : serviceProviders) {
-					if (iter.getName().equals(input[1])) {
+					if (iter.getName().equals(input[1])) { // Checks whether a service provider with the same name
+															// exists
 						throw new Exception("Service Provider Exists");
 					}
 				}
@@ -345,7 +350,7 @@ public class InformationSystem {
 			}
 			break;
 		}
-		case "delete": {
+		case "delete": { // Deletes the service provider
 			boolean isFound = false;
 			if (input[1] != null) {
 				for (ServiceProvider iter : serviceProviders) {
@@ -365,7 +370,7 @@ public class InformationSystem {
 			else
 				throw new Exception("Service Provider does not exist");
 		}
-		case "edit": {
+		case "edit": { // Edits the name of service provider
 			boolean isFound = false;
 			if (input[1] != null) {
 				for (ServiceProvider iter : serviceProviders) {
@@ -386,7 +391,7 @@ public class InformationSystem {
 			else
 				throw new Exception("Service Provider does not exist");
 		}
-		case "addPlan": {
+		case "addPlan": { // Adds a subscription plan to the service provider
 			boolean isFound = false;
 			if (input[1] != null) {
 				for (ServiceProvider iter : serviceProviders) {
@@ -408,14 +413,17 @@ public class InformationSystem {
 				throw new Exception("Service Provider does not exist");
 
 		}
-		case "deletePlan": {
+		case "deletePlan": { // Removes a subscription plan from the service provider.
 			boolean isFound = false;
 			if (input[1] != null) {
 				for (ServiceProvider iter : serviceProviders) {
 					if (iter.getName().equals(input[1])) {
 						isFound = true;
 						System.out.print(">\tSubscription Plan Name : ");
-						if (iter.removeSubscriptionPlan(iter.findSubscriptionPlan(scan.nextLine())))
+						if (iter.removeSubscriptionPlan(iter.findSubscriptionPlan(scan.nextLine()))) // Removes if
+																										// exists,
+																										// returns false
+																										// otherwise
 							System.out.println(">Subscribe Plan is removed");
 						else
 							System.out.println(">Subscribe Plan does not exist");
@@ -430,10 +438,10 @@ public class InformationSystem {
 			else
 				throw new Exception("Service Provider does not exist");
 		}
-		case "display": {
+		case "display": { // Displays all details of selected service provider
 			boolean isFound = false;
 			if (input[1] != null) {
-				for (ServiceProvider iter : serviceProviders) {
+				for (ServiceProvider iter : serviceProviders) { // Finds the provider
 					if (iter.getName().equals(input[1])) {
 						System.out.println(">\n" + iter.toString());
 						isFound = true;
@@ -448,7 +456,7 @@ public class InformationSystem {
 			else
 				throw new Exception("Customer does not exist");
 		}
-		case "list": {
+		case "list": { // Displays name of all service providers along with their types
 			System.out.println("\tProvider Name\tProvider Type");
 			for (ServiceProvider iter : serviceProviders) {
 
