@@ -1,7 +1,20 @@
-# Service-Provider-System
-An information system for Service Providers
-# About Information System : 
-* Information System is my project for Object Oriented Programming Lecture.
+<br />
+<p align="center">
+  <a href="https://github.com/umutsevdi1/Service-Provider-System">
+  </a>
+
+  <h3 align="center">Service-Provider-System</h3>
+
+  <p align="center">
+    An information system for Service Providers.
+  </p>
+</p>
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+Information System is my project for Object Oriented Programming Lecture.
 
 
 # Menus : 
@@ -29,4 +42,10 @@ An information system for Service Providers
 	* deletePlan	serviceName :	Removes the subscription from selected service provider
 	* display	serviceName :	Displays detailed information of the service provider
 	* list :	Displays each service provider in a list followed by the provider type.
+
+<!-- CONTACT -->
+## Contact
+
+Project Link: [https://github.com/umutsevdi1/Service-Provider-System](https://github.com/umutsevdi1/Service-Provider-System)
+
 
