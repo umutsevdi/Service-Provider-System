@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-  <a href="https://github.com/umutsevdi1/Service-Provider-System">
+  <a href="https://github.com/umutsevdi/Service-Provider-System">
   </a>
 
   <h3 align="center">Service-Provider-System</h3>
@@ -46,6 +46,6 @@ Information System is my project for Object Oriented Programming Lecture.
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/umutsevdi1/Service-Provider-System](https://github.com/umutsevdi1/Service-Provider-System)
+Project Link: [https://github.com/umutsevdi/Service-Provider-System](https://github.com/umutsevdi/Service-Provider-System)
 
 
